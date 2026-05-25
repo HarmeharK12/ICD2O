@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Games Hub</title>
+    <link rel="stylesheet" href="web_sprint.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <section id="home-page" class="page active">
+            <div class="hero-card">
+                <h1>Mini Games Hub</h1>
+                <div class="menu-actions">
+                    <button id="btn-hangman" class="primary-btn">Hangman</button>
+                    <button id="btn-tic-tac-toe" class="primary-btn">Tic Tac Toe</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tic-page" class="page">
+            <button id="btn-back-home" class="back-button">← Back</button>
+            <div class="page-header">
+                <div class="logo-card">
+                    <div class="logo-symbol">T</div>
+                    <div>
+                        <h2>Live Tic Tac Toe</h2>
+                        <p>Play against a quick AI after a coin flip.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-panel">
+                <div class="team-panel">
+                    <h3>Player</h3>
+                    <div class="symbol-group" id="player-symbols"></div>
+                </div>
+                <div class="team-panel">
+                    <h3>AI</h3>
+                    <div class="symbol-group" id="ai-symbols"></div>
+                </div>
+            </div>
+
+            <div class="coin-section">
+                <h3>Flip a Coin</h3>
+                <button id="btn-flip-coin" class="secondary-btn">Flip a Coin</button>
+                <div id="coin-choice" class="coin-choice hidden">
+                    <p>Choose a side</p>
+                    <div class="coin-buttons">
+                        <button class="coin-side" data-side="Heads">Heads</button>
+                        <button class="coin-side" data-side="Tails">Tails</button>
+                    </div>
+                </div>
+                <div id="coin-result" class="coin-result hidden">
+                    <p id="coin-result-text"></p>
+                    <div class="coin-animation" id="coin-animation"></div>
+                </div>
+            </div>
+
+            <div class="board-section">
+                <div id="board" class="board"></div>
+                <p id="status-text" class="game-status">Press "Flip a Coin" to begin.</p>
+                <button id="btn-reset" class="secondary-btn hidden">Play Again</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="web_sprint.js"></script>
+</body>
+</html>
