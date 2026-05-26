@@ -1,18 +1,6 @@
 const boardElement = document.getElementById('board');
 const statusText = document.getElementById('status');
 const btnReset = document.getElementById('reset-btn');
-<<<<<<< HEAD
-const onePlayerBtn = document.getElementById('one-player-btn');
-const twoPlayerBtn = document.getElementById('two-player-btn');
-const headsBtn = document.getElementById('heads-btn');
-const tailsBtn = document.getElementById('tails-btn');
-const flipBtn = document.getElementById('flip-btn');
-const coinOptions = document.getElementById('coin-options');
-const coinResultText = document.getElementById('coin-result');
-=======
-const winOverlay = document.getElementById('win-overlay');
-const confettiContainer = document.getElementById('confetti-container');
->>>>>>> 6db7e633d7e03acba5857c46d73e9af7d4cb332a
 
 let board = Array(9).fill('');
 let mode = null;
