@@ -5,6 +5,7 @@ const tailsBtn = document.getElementById('choose-tails');
 const flipBtn = document.getElementById('flip-btn');
 const coin = document.getElementById('coin');
 const coinResultEl = document.getElementById('coin-result');
+const youtubeLoseFrame = document.getElementById('yt-lose-sound');
 
 let board = Array(9).fill('');
 let currentTurn = null;
@@ -204,8 +205,17 @@ function showEndPopup(text, type) {
         playCheerSound();
     } else if (type === 'lose') {
         triggerThumbsDown();
-        playBooSound();
+        playLoseSound();
     }
+}
+
+function playLoseSound() {
+    if (!youtubeLoseFrame) {
+        playBooSound();
+        return;
+    }
+    const videoId = 'LukyMYp2noo';
+    youtubeLoseFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&start=0&${Date.now()}`;
 }
 
 function hideEndPopup() {
