@@ -166,6 +166,58 @@ button {
     margin-top: 18px;
 }
 
+.mode-panel {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.mode-btn {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #f4f5fb;
+    font-weight: 700;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.mode-btn:hover,
+.mode-btn.active {
+    background: rgba(91, 108, 247, 0.92);
+    color: #fff;
+}
+
+.coin-options {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+}
+
+.coin-choice-label {
+    color: #c7d1ff;
+    font-size: 0.95rem;
+}
+
+.flip-btn {
+    min-width: 180px;
+}
+
+.coin-result {
+    min-height: 1.4rem;
+    color: #d0d5ff;
+}
+
+.hint-text {
+    margin: 8px 0 0;
+    color: #d0d5ff;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
 .hidden {
     display: none;
 }
