@@ -30,9 +30,15 @@ function renderBoard() {
 
 function resetGame() {
     board = Array(9).fill('');
+<<<<<<< HEAD
     currentTurn = 'Player';
     gameActive = true;
     statusText.textContent = 'You start. Pick a cell to begin.';
+=======
+    currentTurn = null; // will be decided by coin toss
+    gameActive = false; // disabled until coin toss finishes
+    statusText.textContent = 'Pick Heads or Tails and flip the coin to decide who goes first.';
+>>>>>>> 6cb1f07ade9125f7e174f03965f3702ce2401606
     btnReset.classList.add('hidden');
     renderBoard();
 }
@@ -169,3 +175,92 @@ function endGame(message) {
 
 btnReset.addEventListener('click', resetGame);
 resetGame();
+
+// --- Coin toss UI + logic ---
+const btnChooseHeads = document.getElementById('choose-heads');
+const btnChooseTails = document.getElementById('choose-tails');
+const btnFlip = document.getElementById('flip-btn');
+const coin = document.getElementById('coin');
+const coinResultEl = document.getElementById('coin-result');
+const coinChoicePara = document.querySelector('.coin-choice');
+
+let userChoice = null; // 'heads' or 'tails'
+let isFlipping = false;
+
+function clearSelection() {
+    btnChooseHeads.classList.remove('selected');
+    btnChooseTails.classList.remove('selected');
+}
+
+btnChooseHeads.addEventListener('click', () => {
+    clearSelection();
+    btnChooseHeads.classList.add('selected');
+    userChoice = 'heads';
+    coinChoicePara.textContent = 'You chose Heads. Press Flip to toss.';
+});
+
+btnChooseTails.addEventListener('click', () => {
+    clearSelection();
+    btnChooseTails.classList.add('selected');
+    userChoice = 'tails';
+    coinChoicePara.textContent = 'You chose Tails. Press Flip to toss.';
+});
+
+btnFlip.addEventListener('click', () => {
+    if (isFlipping) return;
+    if (!userChoice) {
+        coinChoicePara.textContent = 'Please choose Heads or Tails first.';
+        return;
+    }
+    doCoinFlip();
+});
+
+function doCoinFlip() {
+    isFlipping = true;
+    coinResultEl.classList.add('hidden');
+    coinChoicePara.textContent = 'Flipping...';
+
+    // random result
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+
+    // spins and degrees: land with front (heads) at 0deg, back (tails) at 180deg
+    const spins = Math.floor(Math.random() * 4) + 4; // 4-7 spins
+    const degrees = 360 * spins + (result === 'heads' ? 0 : 180);
+
+    // Apply transform to coin (rotateY). Use a timeout to allow CSS transition
+    coin.style.transform = `rotateY(${degrees}deg)`;
+
+    // wait for transition to finish
+    function onTransitionEnd() {
+        coin.removeEventListener('transitionend', onTransitionEnd);
+        isFlipping = false;
+        coinResultEl.classList.remove('hidden');
+        coinResultEl.textContent = `Coin landed on ${result.toUpperCase()}!`;
+
+        // determine who goes first
+        if (userChoice === result) {
+            statusText.textContent = 'You won the toss — you go first.';
+            currentTurn = 'Player';
+            playerSymbol = 'X';
+            aiSymbol = 'O';
+            gameActive = true;
+            renderBoard();
+        } else {
+            statusText.textContent = 'Computer won the toss — it goes first.';
+            currentTurn = 'AI';
+            playerSymbol = 'X';
+            aiSymbol = 'O';
+            gameActive = true;
+            renderBoard();
+            setTimeout(runAiTurn, 800);
+        }
+
+        // show reset button once the game is active
+        btnReset.classList.remove('hidden');
+    }
+
+    coin.addEventListener('transitionend', onTransitionEnd);
+}
+
+// Initialize small transform so first flip animates from known state
+coin.style.transform = 'rotateY(0deg)';
