@@ -172,7 +172,7 @@ button {
 }
 
 .coin-sprite.coin-tails {
-    background-image: linear-gradient(135deg, rgba(232, 191, 65, 0.22), rgba(142, 104, 32, 0.25));
+    background-image: linear-gradient(135deg, rgba(232, 191, 65, 0.22), rgba(150, 108, 31, 0.25));
 }
 
 .coin-sprite.coin-heads {
