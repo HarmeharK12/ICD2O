@@ -234,7 +234,6 @@ button {
     to { transform: rotate(1080deg); }
 }
 
-<<<<<<< HEAD
 /* 3D coin styles */
 .coin {
     width: 100%;
@@ -268,123 +267,6 @@ button {
 .coin-side.selected { box-shadow: 0 6px 18px rgba(91,108,247,0.28); transform: translateY(-2px); }
 
 .coin-result { text-align: center; margin-top: 12px; font-weight: 700; }
-=======
-.win-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-}
-
-.win-overlay.hidden {
-    display: none;
-}
-
-.win-message {
-    position: relative;
-    z-index: 1001;
-    text-align: center;
-}
-
-.win-message h2 {
-    font-size: clamp(3rem, 10vw, 6rem);
-    font-weight: 900;
-    margin: 0;
-    color: #ffd700;
-    text-shadow: 0 4px 12px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.2);
-    letter-spacing: -0.02em;
-    animation: bounce 0.6s ease-in-out;
-}
-
-@keyframes bounce {
-    0% {
-        transform: scale(0.3) translateY(-100px);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-    }
-}
-
-.confetti-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    pointer-events: none;
-}
-
-.confetti.rect {
-    background: #ff6b6b;
-}
-
-.confetti.circle {
-    border-radius: 50%;
-    background: #4ecdc4;
-}
-
-.confetti.triangle {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 10px solid #ffe66d;
-    background: transparent;
-}
-
-.confetti.square {
-    background: #a8e6cf;
-}
-
-.confetti.diamond {
-    transform: rotate(45deg);
-    background: #ffd3b6;
-}
-
-.confetti.star {
-    background: #ffaaa5;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-@keyframes sway-left {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(-30px);
-    }
-}
-
-@keyframes sway-right {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(30px);
-    }
-}
->>>>>>> d4877ec40e50c2bb1351b42a33a0be4e641fc10a
 
 @media (max-width: 700px) {
     .status-panel {
