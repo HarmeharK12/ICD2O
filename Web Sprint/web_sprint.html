@@ -52,14 +52,12 @@
         </div>
       </section>
 
-      <section class="page-actions">
-        <button id="reset-btn">Restart</button>
-      </section>
-
-      <div id="win-overlay" class="win-overlay hidden">
+      <div id="end-popup" class="win-overlay hidden">
         <div class="confetti-container" id="confetti-container"></div>
+        <div class="thumbs-container" id="thumbs-container"></div>
         <div class="win-message">
-          <h2>YOU WIN</h2>
+          <h2 id="end-message">YOU WIN</h2>
+          <button id="end-popup-btn" class="primary-btn">Play Again</button>
         </div>
       </div>
     </main>
