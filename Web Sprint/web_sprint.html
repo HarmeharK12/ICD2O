@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="web_sprint.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav>
+        <a href="index.html">Back to Main Menu</a>
+      </nav>
+
+      <section class="page-header">
+        <h1>Tic Tac Toe</h1>
+      </section>
+
+      <section class="status-panel">
+        <div id="status">Player X starts. Pick a cell to begin.</div>
+      </section>
+
+      <section class="board-section">
+        <div class="grid board" id="board">
+          <button class="cell" data-index="0"></button>
+          <button class="cell" data-index="1"></button>
+          <button class="cell" data-index="2"></button>
+          <button class="cell" data-index="3"></button>
+          <button class="cell" data-index="4"></button>
+          <button class="cell" data-index="5"></button>
+          <button class="cell" data-index="6"></button>
+          <button class="cell" data-index="7"></button>
+          <button class="cell" data-index="8"></button>
+        </div>
+      </section>
+
+      <section class="page-actions">
+        <button id="reset-btn">Restart</button>
+      </section>
+    </main>
+
+    <script src="web_sprint.js"></script>
+  </body>
+</html>
