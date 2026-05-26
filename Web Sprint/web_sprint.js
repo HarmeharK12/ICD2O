@@ -1,6 +1,8 @@
 const boardElement = document.getElementById('board');
 const statusText = document.getElementById('status');
 const btnReset = document.getElementById('reset-btn');
+const winOverlay = document.getElementById('win-overlay');
+const confettiContainer = document.getElementById('confetti-container');
 
 let board = Array(9).fill('');
 let currentTurn = 'Player';
@@ -114,11 +116,54 @@ function checkDraw() {
     return board.every(cell => cell !== '') && !checkWinner(playerSymbol) && !checkWinner(aiSymbol);
 }
 
+function createConfetti() {
+    const confettiTypes = ['rect', 'circle', 'triangle', 'square', 'diamond', 'star'];
+    const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ffd3b6', '#ffaaa5'];
+    
+    confettiContainer.innerHTML = '';
+    
+    for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement('div');
+        const type = confettiTypes[Math.floor(Math.random() * confettiTypes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.className = `confetti ${type}`;
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = type === 'triangle' || type === 'star' ? 'transparent' : color;
+        
+        if (type === 'triangle' || type === 'star') {
+            if (type === 'triangle') {
+                confetti.style.borderTopColor = color;
+            } else {
+                confetti.style.background = color;
+            }
+        }
+        
+        const duration = 2 + Math.random() * 1;
+        const delay = Math.random() * 0.2;
+        const sway = Math.random() > 0.5 ? 'sway-left' : 'sway-right';
+        
+        confetti.style.animation = `fall ${duration}s linear ${delay}s forwards, ${sway} ${0.6 + Math.random() * 0.4}s ease-in-out ${delay}s infinite`;
+        confetti.style.top = '-10px';
+        
+        confettiContainer.appendChild(confetti);
+    }
+}
+
 function endGame(message) {
     gameActive = false;
     currentTurn = null;
     statusText.textContent = message;
     btnReset.classList.remove('hidden');
+    
+    if (message === 'You Win!') {
+        createConfetti();
+        winOverlay.classList.remove('hidden');
+        setTimeout(() => {
+            winOverlay.classList.add('hidden');
+        }, 4000);
+    }
+    
     renderBoard();
 }
 
