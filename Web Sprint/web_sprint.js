@@ -32,7 +32,7 @@ function resetGame() {
     board = Array(9).fill('');
     currentTurn = 'Player';
     gameActive = true;
-    statusText.textContent = 'Player X starts. Pick a cell to begin.';
+    statusText.textContent = 'You start. Pick a cell to begin.';
     btnReset.classList.add('hidden');
     renderBoard();
 }
