@@ -12,6 +12,7 @@ let currentTurn = null;
 let userChoice = null;
 let isFlipping = false;
 let gameActive = false;
+let coinTransitionHandler = null;
 
 const playerSymbol = 'X';
 const aiSymbol = 'O';
@@ -38,12 +39,15 @@ function resetGame() {
     board = Array(9).fill('');
     currentTurn = null;
     userChoice = null;
+    if (coinTransitionHandler) {
+        coin.removeEventListener('transitionend', coinTransitionHandler);
+        coinTransitionHandler = null;
+    }
     isFlipping = false;
     gameActive = false;
     coinResultEl.textContent = '';
     statusText.textContent = 'Pick Heads or Tails, then flip the coin to decide who goes first.';
     clearSelection();
-    coin.style.transform = 'rotateY(0deg)';
     renderBoard();
 }
 
@@ -78,6 +82,7 @@ function flipCoin() {
 
     function onTransitionEnd() {
         coin.removeEventListener('transitionend', onTransitionEnd);
+        coinTransitionHandler = null;
         isFlipping = false;
         coinResultEl.textContent = `Coin landed on ${result.toUpperCase()}!`;
 
@@ -95,6 +100,7 @@ function flipCoin() {
         }
     }
 
+    coinTransitionHandler = onTransitionEnd;
     coin.addEventListener('transitionend', onTransitionEnd, { once: true });
 }
 
@@ -199,14 +205,19 @@ function endGame(message) {
 
 function showEndPopup(text, type) {
     endMessage.textContent = text;
-    endPopup.classList.remove('hidden');
+    const subtext = document.getElementById('end-subtext');
     if (type === 'win') {
+        subtext.textContent = 'Great job — you beat the AI!';
         triggerConfetti();
         playCheerSound();
     } else if (type === 'lose') {
+        subtext.textContent = 'Better luck next time — the AI wins.';
         triggerThumbsDown();
         playLoseSound();
+    } else {
+        subtext.textContent = 'It was a draw — try again!';
     }
+    endPopup.classList.remove('hidden');
 }
 
 function playLoseSound() {
@@ -226,20 +237,24 @@ function hideEndPopup() {
 
 function triggerConfetti() {
     confettiContainer.innerHTML = '';
-    const colors = ['#ff4d6d', '#f9c74f', '#90be6d', '#4d96ff', '#8d4dff'];
-    for (let i = 0; i < 30; i += 1) {
+    const colors = ['#ff4d6d', '#f9c74f', '#90be6d', '#4d96ff', '#8d4dff', '#ffb703', '#00b4d8'];
+    const count = 120;
+    for (let i = 0; i < count; i += 1) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
-        piece.style.background = colors[i % colors.length];
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
         piece.style.left = `${Math.random() * 100}%`;
-        piece.style.animationDuration = `${1.4 + Math.random() * 0.8}s`;
-        piece.style.animationDelay = `${Math.random() * 0.2}s`;
+        piece.style.top = `${-Math.random() * 20 - 5}%`;
+        piece.style.width = `${6 + Math.random() * 12}px`;
+        piece.style.height = `${14 + Math.random() * 18}px`;
+        piece.style.animationDuration = `${2.8 + Math.random() * 1.2}s`;
+        piece.style.animationDelay = `${Math.random() * 0.8}s`;
         piece.style.transform = `rotate(${Math.random() * 360}deg)`;
         confettiContainer.appendChild(piece);
     }
     setTimeout(() => {
         confettiContainer.innerHTML = '';
-    }, 2400);
+    }, 4200);
 }
 
 function triggerThumbsDown() {
