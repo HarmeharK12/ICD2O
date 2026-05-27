@@ -30,6 +30,8 @@ const resetBtn = document.getElementById('reset-btn');
 const gameOverOverlay = document.getElementById('game-over-overlay');
 const gameOverText = document.getElementById('game-over-text');
 const wordReveal = document.getElementById('word-reveal');
+const winnerSound = document.getElementById('winner-sound');
+const loserSound = document.getElementById('loser-sound');
 
 let currentWord = '';
 let guessedLetters = [];
@@ -128,6 +130,30 @@ function checkGameStatus() {
     }
 }
 
+function playWinnerSound() {
+    if (!winnerSound) {
+        return;
+    }
+
+    winnerSound.currentTime = 0;
+    const playPromise = winnerSound.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+    }
+}
+
+function playLoseSound() {
+    if (!loserSound) {
+        return;
+    }
+
+    loserSound.currentTime = 0;
+    const playPromise = loserSound.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+    }
+}
+
 function endGame(isWin) {
     gameActive = false;
     gameOverOverlay.classList.remove('hidden');
@@ -136,10 +162,12 @@ function endGame(isWin) {
         gameOverText.textContent = 'YOU WIN!';
         gameOverText.style.color = '#ffd700';
         wordReveal.textContent = `The word was: ${currentWord}`;
+        playWinnerSound();
     } else {
         gameOverText.textContent = 'GAME OVER';
         gameOverText.style.color = '#ff6b6b';
         wordReveal.textContent = `The word was: ${currentWord}`;
+        playLoseSound();
     }
     
     setTimeout(() => {
