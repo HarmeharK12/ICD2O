@@ -5,6 +5,7 @@ const tailsBtn = document.getElementById('choose-tails');
 const flipBtn = document.getElementById('flip-btn');
 const coin = document.getElementById('coin');
 const coinResultEl = document.getElementById('coin-result');
+const winnerSound = document.getElementById('winner-sound');
 const youtubeLoseFrame = document.getElementById('yt-lose-sound');
 
 let board = Array(9).fill('');
@@ -209,7 +210,7 @@ function showEndPopup(text, type) {
     if (type === 'win') {
         subtext.textContent = 'Great job — you beat the AI!';
         triggerConfetti();
-        playCheerSound();
+        playWinnerSound();
     } else if (type === 'lose') {
         subtext.textContent = 'Better luck next time — the AI wins.';
         triggerThumbsDown();
@@ -218,6 +219,20 @@ function showEndPopup(text, type) {
         subtext.textContent = 'It was a draw — try again!';
     }
     endPopup.classList.remove('hidden');
+}
+
+function playWinnerSound() {
+    if (winnerSound) {
+        winnerSound.currentTime = 0;
+        const playPromise = winnerSound.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+                playCheerSound();
+            });
+        }
+        return;
+    }
+    playCheerSound();
 }
 
 function playLoseSound() {
