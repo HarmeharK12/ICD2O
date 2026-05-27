@@ -6,6 +6,7 @@ const flipBtn = document.getElementById('flip-btn');
 const coin = document.getElementById('coin');
 const coinResultEl = document.getElementById('coin-result');
 const winnerSound = document.getElementById('winner-sound');
+const loserSound = document.getElementById('loser-sound');
 const youtubeLoseFrame = document.getElementById('yt-lose-sound');
 
 let board = Array(9).fill('');
@@ -236,10 +237,22 @@ function playWinnerSound() {
 }
 
 function playLoseSound() {
+    if (loserSound) {
+        loserSound.currentTime = 0;
+        const playPromise = loserSound.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+                playBooSound();
+            });
+        }
+        return;
+    }
+
     if (!youtubeLoseFrame) {
         playBooSound();
         return;
     }
+
     const videoId = 'LukyMYp2noo';
     youtubeLoseFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&start=0&${Date.now()}`;
 }
