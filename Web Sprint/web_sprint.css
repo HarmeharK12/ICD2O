@@ -288,6 +288,80 @@ button {
     opacity: 0.8;
 }
 
+.end-popup {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(10, 16, 34, 0.76);
+    z-index: 50;
+    padding: 24px;
+}
+
+.popup-card {
+    width: min(100%, 380px);
+    padding: 28px 24px;
+    border-radius: 28px;
+    background: rgba(14, 20, 42, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.32);
+    z-index: 2;
+}
+
+.popup-card p {
+    margin: 0 0 22px;
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-weight: 800;
+}
+
+.confetti-container,
+.thumbs-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.win-message {
+    position: relative;
+    z-index: 2;
+}
+
+.confetti-piece,
+.thumbs-drop {
+    position: absolute;
+    will-change: transform, opacity;
+    opacity: 0;
+}
+
+.confetti-piece {
+    width: 12px;
+    height: 20px;
+    border-radius: 4px;
+    background: gold;
+    animation: confetti-fall 3.6s ease-out forwards;
+}
+
+.thumbs-drop {
+    font-size: 2rem;
+    animation: thumbs-fall 2s linear forwards;
+}
+
+@keyframes confetti-fall {
+    0% { opacity: 0; transform: translateY(-40px) translateX(0px) rotate(0deg); }
+    10% { opacity: 1; }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(140vh) translateX(40px) rotate(720deg); }
+}
+
+@keyframes thumbs-fall {
+    0% { opacity: 0; transform: translateY(-40px) rotate(-15deg); }
+    10% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(80deg); }
+}
+
 .coin-animation {
     width: 140px;
     height: 140px;

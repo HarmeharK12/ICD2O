@@ -12,27 +12,29 @@
             display: flex;
             align-items: flex-start; /* move content toward top */
             justify-content: center;
-            padding-top: 6vh; /* add breathing room from top */
+            padding-top: 8vh; /* bring heading higher */
             background: #f1e3cc;
             color: #2b1f16;
             font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .home-shell {
-            width: min(100%, 440px);
-            padding: 40px 24px;
+            width: min(100%, 860px);
+            padding: 40px 24px 48px;
             text-align: center;
         }
 
         h1 {
-            margin: 0 0 20px; /* reduce bottom margin to pull content up */
+            margin: 0 0 8px; /* keep heading higher */
             font-size: clamp(2rem, 5vw, 3rem);
             letter-spacing: -0.02em;
         }
 
         .game-options {
             display: grid;
-            gap: 24px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 40px;
+            margin-top: 140px; /* move the buttons much lower */
         }
 
         .game-button {
@@ -41,9 +43,15 @@
             color: inherit;
         }
 
+        @media (max-width: 720px) {
+            .game-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .game-card {
             width: 100%;
-            min-height: 240px;
+            min-height: 320px;
             aspect-ratio: 4 / 3;
             border-radius: 36px; /* squircle-like */
             overflow: hidden;
@@ -99,7 +107,7 @@
         <h1>Choose a Game</h1>
         <div class="game-options">
             <a class="game-button" href="Web Sprint/web_sprint.html">
-                <div class="game-card" style="background-image: url('https://play-lh.googleusercontent.com/zPxLgj5nvl20ahJV7aFC6S5mD8kii5CEEDj25j1P9CYAfXL9sdDuO-8eES0r4DhJHrU');">
+                <div class="game-card" style="background-image: url('https://play-lh.googleusercontent.com/FKZpd7mFIZClF1csEiGpuj-XRycBQK2kHRCxdQ_LUnzgKfvj_wBAq4rf4EjYc-xz7yUw');">
                     <div class="game-label">Tic Tac Toe</div>
                     <div class="play-circle">&#9658;</div>
                 </div>

@@ -52,16 +52,17 @@
         </div>
       </section>
 
-      <section class="page-actions">
-        <button id="reset-btn">Restart</button>
-      </section>
-
-      <div id="win-overlay" class="win-overlay hidden">
+      <div id="end-popup" class="game-over-overlay hidden">
         <div class="confetti-container" id="confetti-container"></div>
-        <div class="win-message">
-          <h2>YOU WIN</h2>
+        <div class="thumbs-container" id="thumbs-container"></div>
+        <div class="game-over-message">
+          <h2 id="end-message">YOU WIN</h2>
+          <p id="end-subtext">Great job — you beat the AI!</p>
+          <button id="end-popup-btn" class="primary-btn">Play Again</button>
         </div>
       </div>
+
+      <iframe id="yt-lose-sound" width="1" height="1" src="" allow="autoplay" style="position:absolute; left:-9999px; opacity:0; pointer-events:none;"></iframe>
     </main>
 
     <script src="web_sprint.js"></script>

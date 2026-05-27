@@ -1,17 +1,18 @@
 const boardElement = document.getElementById('board');
 const statusText = document.getElementById('status');
-const btnReset = document.getElementById('reset-btn');
 const headsBtn = document.getElementById('choose-heads');
 const tailsBtn = document.getElementById('choose-tails');
 const flipBtn = document.getElementById('flip-btn');
 const coin = document.getElementById('coin');
 const coinResultEl = document.getElementById('coin-result');
+const youtubeLoseFrame = document.getElementById('yt-lose-sound');
 
 let board = Array(9).fill('');
 let currentTurn = null;
 let userChoice = null;
 let isFlipping = false;
 let gameActive = false;
+let coinTransitionHandler = null;
 
 const playerSymbol = 'X';
 const aiSymbol = 'O';
@@ -38,13 +39,15 @@ function resetGame() {
     board = Array(9).fill('');
     currentTurn = null;
     userChoice = null;
+    if (coinTransitionHandler) {
+        coin.removeEventListener('transitionend', coinTransitionHandler);
+        coinTransitionHandler = null;
+    }
     isFlipping = false;
     gameActive = false;
     coinResultEl.textContent = '';
     statusText.textContent = 'Pick Heads or Tails, then flip the coin to decide who goes first.';
     clearSelection();
-    btnReset.classList.add('hidden');
-    coin.style.transform = 'rotateY(0deg)';
     renderBoard();
 }
 
@@ -79,6 +82,7 @@ function flipCoin() {
 
     function onTransitionEnd() {
         coin.removeEventListener('transitionend', onTransitionEnd);
+        coinTransitionHandler = null;
         isFlipping = false;
         coinResultEl.textContent = `Coin landed on ${result.toUpperCase()}!`;
 
@@ -94,10 +98,9 @@ function flipCoin() {
             renderBoard();
             setTimeout(runAiTurn, 900);
         }
-
-        btnReset.classList.remove('hidden');
     }
 
+    coinTransitionHandler = onTransitionEnd;
     coin.addEventListener('transitionend', onTransitionEnd, { once: true });
 }
 
@@ -176,6 +179,12 @@ function checkWinner(symbol) {
     return winningLines.some(line => line.every(index => board[index] === symbol));
 }
 
+const endPopup = document.getElementById('end-popup');
+const endMessage = document.getElementById('end-message');
+const endPopupBtn = document.getElementById('end-popup-btn');
+const confettiContainer = document.getElementById('confetti-container');
+const thumbsContainer = document.getElementById('thumbs-container');
+
 function checkDraw() {
     return board.every(cell => cell !== '') && !checkWinner(playerSymbol) && !checkWinner(aiSymbol);
 }
@@ -184,12 +193,125 @@ function endGame(message) {
     gameActive = false;
     currentTurn = null;
     statusText.textContent = message;
-    btnReset.classList.remove('hidden');
     renderBoard();
+    if (message.includes('Lose') || message.includes('Computer Wins')) {
+        showEndPopup('YOU LOSE 😞', 'lose');
+    } else if (message.includes('Win')) {
+        showEndPopup('YOU WON 🎊', 'win');
+    } else {
+        showEndPopup(message, 'draw');
+    }
 }
+
+function showEndPopup(text, type) {
+    endMessage.textContent = text;
+    const subtext = document.getElementById('end-subtext');
+    if (type === 'win') {
+        subtext.textContent = 'Great job — you beat the AI!';
+        triggerConfetti();
+        playCheerSound();
+    } else if (type === 'lose') {
+        subtext.textContent = 'Better luck next time — the AI wins.';
+        triggerThumbsDown();
+        playLoseSound();
+    } else {
+        subtext.textContent = 'It was a draw — try again!';
+    }
+    endPopup.classList.remove('hidden');
+}
+
+function playLoseSound() {
+    if (!youtubeLoseFrame) {
+        playBooSound();
+        return;
+    }
+    const videoId = 'LukyMYp2noo';
+    youtubeLoseFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&start=0&${Date.now()}`;
+}
+
+function hideEndPopup() {
+    endPopup.classList.add('hidden');
+    confettiContainer.innerHTML = '';
+    thumbsContainer.innerHTML = '';
+}
+
+function triggerConfetti() {
+    confettiContainer.innerHTML = '';
+    const colors = ['#ff4d6d', '#f9c74f', '#90be6d', '#4d96ff', '#8d4dff', '#ffb703', '#00b4d8'];
+    const count = 120;
+    for (let i = 0; i < count; i += 1) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.top = `${-Math.random() * 20 - 5}%`;
+        piece.style.width = `${6 + Math.random() * 12}px`;
+        piece.style.height = `${14 + Math.random() * 18}px`;
+        piece.style.animationDuration = `${2.8 + Math.random() * 1.2}s`;
+        piece.style.animationDelay = `${Math.random() * 0.8}s`;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        confettiContainer.appendChild(piece);
+    }
+    setTimeout(() => {
+        confettiContainer.innerHTML = '';
+    }, 4200);
+}
+
+function triggerThumbsDown() {
+    thumbsContainer.innerHTML = '';
+    for (let i = 0; i < 20; i += 1) {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumbs-drop';
+        thumb.textContent = '👎';
+        thumb.style.left = `${Math.random() * 90 + 5}%`;
+        thumb.style.animationDuration = `${1.8 + Math.random() * 0.6}s`;
+        thumb.style.animationDelay = `${Math.random() * 0.3}s`;
+        thumb.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+        thumbsContainer.appendChild(thumb);
+    }
+    setTimeout(() => {
+        thumbsContainer.innerHTML = '';
+    }, 2600);
+}
+
+function playCheerSound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.24, audioCtx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.2);
+}
+
+function playBooSound() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 1.1);
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.4);
+}
+
+endPopupBtn.addEventListener('click', () => {
+    hideEndPopup();
+    resetGame();
+});
 
 headsBtn.addEventListener('click', () => selectChoice('heads'));
 tailsBtn.addEventListener('click', () => selectChoice('tails'));
 flipBtn.addEventListener('click', flipCoin);
-btnReset.addEventListener('click', resetGame);
 resetGame();
