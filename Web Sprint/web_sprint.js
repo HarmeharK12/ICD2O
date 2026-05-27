@@ -148,7 +148,7 @@ function runAiTurn() {
         return;
     }
 
-    const chosenIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+    const chosenIndex = getBestAiMove();
     board[chosenIndex] = aiSymbol;
     renderBoard();
 
@@ -166,6 +166,64 @@ function runAiTurn() {
     statusText.textContent = 'Your turn. Pick an empty cell.';
 }
 
+function getBestAiMove() {
+    let bestScore = -Infinity;
+    let bestIndex = null;
+
+    const emptyIndices = board
+        .map((value, index) => (value === '' ? index : null))
+        .filter(index => index !== null);
+
+    emptyIndices.forEach(index => {
+        board[index] = aiSymbol;
+        const score = minimax(board, 0, false);
+        board[index] = '';
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestIndex = index;
+        }
+    });
+
+    return bestIndex !== null ? bestIndex : emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+}
+
+function minimax(tempBoard, depth, isMaximizing) {
+    if (checkWinnerOnBoard(tempBoard, aiSymbol)) {
+        return 10 - depth;
+    }
+    if (checkWinnerOnBoard(tempBoard, playerSymbol)) {
+        return depth - 10;
+    }
+    if (tempBoard.every(cell => cell !== '')) {
+        return 0;
+    }
+
+    if (isMaximizing) {
+        let bestScore = -Infinity;
+        tempBoard.forEach((cell, index) => {
+            if (cell === '') {
+                tempBoard[index] = aiSymbol;
+                const score = minimax(tempBoard, depth + 1, false);
+                tempBoard[index] = '';
+                bestScore = Math.max(score, bestScore);
+            }
+        });
+        return bestScore;
+    }
+
+    let bestScore = Infinity;
+    tempBoard.forEach((cell, index) => {
+        if (cell === '') {
+            tempBoard[index] = playerSymbol;
+            const score = minimax(tempBoard, depth + 1, true);
+            tempBoard[index] = '';
+            bestScore = Math.min(score, bestScore);
+        }
+    });
+    return bestScore;
+}
+
 function checkWinner(symbol) {
     const winningLines = [
         [0, 1, 2],
@@ -179,6 +237,21 @@ function checkWinner(symbol) {
     ];
 
     return winningLines.some(line => line.every(index => board[index] === symbol));
+}
+
+function checkWinnerOnBoard(tempBoard, symbol) {
+    const winningLines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    return winningLines.some(line => line.every(index => tempBoard[index] === symbol));
 }
 
 const endPopup = document.getElementById('end-popup');
