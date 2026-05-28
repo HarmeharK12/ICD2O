@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="web_sprint.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <nav>
+        <a href="/">Back to Main Menu</a>
+      </nav>
+
+      <section class="page-header">
+        <h1>Tic Tac Toe</h1>
+      </section>
+
+      <section class="status-panel">
+        <div id="status">Pick Heads or Tails, then flip the coin to decide who goes first.</div>
+
+        <div class="coin-section">
+          <div class="coin-choice-label">Choose a side:</div>
+          <div class="coin-buttons">
+            <button id="choose-heads" class="coin-side">Heads</button>
+            <button id="choose-tails" class="coin-side">Tails</button>
+            <button id="flip-btn" class="primary-btn">Flip Coin</button>
+          </div>
+
+          <div class="coin-animation" id="coin-animation">
+            <div class="coin" id="coin">
+              <img class="coin-face coin-front" src="https://i.cbc.ca/ais/1.7028101,1699994423000/full/max/0/default.jpg?im=Crop%2Crect%3D%280%2C0%2C4096%2C4096%29%3B" alt="Heads" />
+              <img class="coin-face coin-back" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-VYkBVU3DUw6l5SOLHW6bO71Vf8t5hlOzJw&s" alt="Tails" />
+            </div>
+          </div>
+
+          <div id="coin-result" class="coin-result"></div>
+        </div>
+      </section>
+
+      <section class="board-section">
+        <div class="grid board" id="board">
+          <button class="cell" data-index="0"></button>
+          <button class="cell" data-index="1"></button>
+          <button class="cell" data-index="2"></button>
+          <button class="cell" data-index="3"></button>
+          <button class="cell" data-index="4"></button>
+          <button class="cell" data-index="5"></button>
+          <button class="cell" data-index="6"></button>
+          <button class="cell" data-index="7"></button>
+          <button class="cell" data-index="8"></button>
+        </div>
+      </section>
+
+      <div id="end-popup" class="game-over-overlay hidden">
+        <div class="confetti-container" id="confetti-container"></div>
+        <div class="thumbs-container" id="thumbs-container"></div>
+        <div class="game-over-message">
+          <h2 id="end-message">YOU WIN</h2>
+          <p id="end-subtext">Great job — you beat the AI!</p>
+          <button id="end-popup-btn" class="primary-btn">Play Again</button>
+        </div>
+      </div>
+
+      <iframe id="yt-lose-sound" width="1" height="1" src="" allow="autoplay" style="position:absolute; left:-9999px; opacity:0; pointer-events:none;"></iframe>
+    </main>
+
+    <script src="web_sprint.js"></script>
+  </body>
+</html>
